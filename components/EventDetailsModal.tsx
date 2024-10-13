@@ -12,6 +12,19 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
 }) => {
   if (!isOpen) return null; 
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    return date.toLocaleString('en-US', options);
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
@@ -26,11 +39,11 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
         </p>
         <p className="text-gray-600 mb-2">
           <span className="font-semibold">Start Date: </span>
-          {startDate}
+          {formatDate(startDate)}
         </p>
         <p className="text-gray-600 mb-4">
           <span className="font-semibold">End Date: </span>
-          {endDate}
+          {formatDate(endDate)}
         </p>
 
         <button
