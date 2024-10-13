@@ -92,8 +92,7 @@ const EventCards = () => {
         <DatePicker selectedDate={selectedDate} onDateChange={handleSelectedDateChange} />
       </div>
       <h1 className="text-2xl mb-6">Events on {selectedDate}</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      {events.length > 0 ? (<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {events.map((event) => (
           <EventCard
             key={event.id}
@@ -104,7 +103,8 @@ const EventCards = () => {
             onView={() => handleView(event)}
           />
         ))}
-      </div>
+      </div>):(<p className='text-gray-600'> No Events Added For this Day</p>)}
+      
 
       {selectedEvent && (
         <EventDetailsModal
