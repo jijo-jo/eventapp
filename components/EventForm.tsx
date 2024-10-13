@@ -127,7 +127,6 @@ const EventForm = ({ initialEvent, onSubmit }: EventFormProps) => {
                             value={startDate}
                             onChange={(e) => {
                                 setStartDate(e.target.value)
-                                e.target.blur();
                             }}
                             required
                             className={`mt-1 block w-full px-3 py-2 border ${errors.startDate ? "border-red-500" : "border-gray-300"
@@ -147,7 +146,6 @@ const EventForm = ({ initialEvent, onSubmit }: EventFormProps) => {
                             value={endDate}
                             onChange={(e) => {
                                 setEndDate(e.target.value)
-                                e.target.blur();
                             }}
                             required
                             className={`mt-1 block w-full px-3 py-2 border ${errors.endDate ? "border-red-500" : "border-gray-300"
