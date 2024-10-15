@@ -6,7 +6,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Event, CalendarEventProps } from '@types';
-import { EventClickArg } from '@fullcalendar/core';
+import { EventClickArg,DatesSetArg, EventDropArg} from '@fullcalendar/core';
+import { EventResizeDoneArg } from '@fullcalendar/interaction';
 import { useRouter } from 'next/navigation';
 import EventDetailsModal from './EventDetailsModal';
 
@@ -19,7 +20,7 @@ const CalendarComponent = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const router = useRouter();
 
-    const getRandomColor = () => {
+    const getRandomColor = (): string => {
         const letters = '0123456789ABCDEF';
         let color = '#';
         for (let i = 0; i < 6; i++) {
@@ -29,7 +30,7 @@ const CalendarComponent = () => {
     };
 
     useEffect(() => {
-        const storedEvents = JSON.parse(localStorage.getItem('events') || '[]');
+        const storedEvents: Event[] = JSON.parse(localStorage.getItem('events') || '[]');
         setNonFormatEvents(storedEvents);
         const formattedEvents = storedEvents.map((event: Event) => ({
             id: event.id,
@@ -43,7 +44,7 @@ const CalendarComponent = () => {
         setEvents(formattedEvents);
     }, []);
 
-    const handleEventClick = (clickInfo: EventClickArg) => {
+    const handleEventClick = (clickInfo: EventClickArg): void => {
         const eventId = clickInfo.event._def.publicId;
         const clickedEvent = nonFormatevents.find(event => event.id === eventId);
         if (clickedEvent) {
@@ -52,24 +53,22 @@ const CalendarComponent = () => {
         }
     };
 
-    const handleCloseModal = () => {
+    const handleCloseModal = (): void => {
         setIsModalOpen(false);
         setSelectedEvent(null);
     };
 
-
-    const handleEdit = (id: string) => {
+    const handleEdit = (id: string): void => {
         localStorage.setItem('calendarView', currentView);
         localStorage.setItem('calendarDate', currentDate.toISOString());
         router.push(`/edit-event/${id}?fromCalendar=true`);
     };
 
-
-    const handleEventDrop = (eventInfo: any) => {
+    const handleEventDrop = (eventInfo: EventDropArg): void => {
         const updatedEvents = nonFormatevents.map((event) => {
             if (event.id === eventInfo.event.id) {
-                event.startDate = eventInfo.event.start.toISOString();
-                event.endDate = eventInfo.event.end ? eventInfo.event.end.toISOString() : eventInfo.event.start.toISOString();
+                event.startDate = eventInfo.event.start?.toISOString() || '';
+                event.endDate = eventInfo.event.end?.toISOString() || eventInfo.event.start?.toISOString() || '';
             }
             return event;
         });
@@ -86,11 +85,11 @@ const CalendarComponent = () => {
         })));
     };
 
-    const handleEventResize = (eventInfo: any) => {
+    const handleEventResize = (eventInfo: EventResizeDoneArg): void => {
         const updatedEvents = nonFormatevents.map((event) => {
             if (event.id === eventInfo.event.id) {
-                event.startDate = eventInfo.event.start.toISOString();
-                event.endDate = eventInfo.event.end ? eventInfo.event.end.toISOString() : eventInfo.event.start.toISOString();
+                event.startDate = eventInfo.event.start?.toISOString() || '';
+                event.endDate = eventInfo.event.end?.toISOString() || eventInfo.event.start?.toISOString() || '';
             }
             return event;
         });
@@ -136,7 +135,7 @@ const CalendarComponent = () => {
                     selectable={true}
                     selectMirror={true}
                     dayMaxEvents={true}
-                    datesSet={(arg) => {
+                    datesSet={(arg: DatesSetArg) => {
                         setCurrentView(arg.view.type);
                         setCurrentDate(arg.start);
                     }}
@@ -159,6 +158,7 @@ const CalendarComponent = () => {
 };
 
 export default CalendarComponent;
+
 
 
 
