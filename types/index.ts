@@ -44,9 +44,20 @@ export interface EventDetailsModalProps {
     address: string;
     startDate: string;
     endDate: string;
+    onEdit?:() => void
   }
 
 export interface EventFormProps {
     initialEvent?: Event;
     onSubmit: (eventData: Event) => void;
+    calenderPage?:boolean
 }
+
+export interface CalendarEventProps {
+    id: string;
+    title: string;
+    start: string; 
+    end: string; 
+    backgroundColor: string;
+    borderColor: string;
+  }
